@@ -6,13 +6,68 @@
     <title>CPC - Emery Oil Verdünnungsrechner</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase (compat SDK, global "firebase" object) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen text-gray-100 font-sans">
+
+    <!-- ============================================================ -->
+    <!-- LOGIN GATE - blockiert die gesamte Seite bis Login erfolgt   -->
+    <!-- ============================================================ -->
+    <div id="loginGate" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/95 backdrop-blur-sm px-4">
+        <div class="w-full max-w-sm bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl px-8 py-10">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-2">⚗️</div>
+                <h1 class="text-xl font-bold text-white">CPC Verdünnungsrechner</h1>
+                <p class="text-gray-400 text-sm mt-1">Bitte anmelden</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">E-Mail</label>
+                    <input type="email" id="loginEmail" autocomplete="username"
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="name@firma.de">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1">Passwort</label>
+                    <input type="password" id="loginPassword" autocomplete="current-password"
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="••••••••">
+                </div>
+
+                <div id="loginError" class="hidden text-red-400 text-sm bg-red-900/20 border border-red-800/50 rounded-lg px-3 py-2"></div>
+
+                <button onclick="doLogin()"
+                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 rounded-lg shadow-lg transition duration-200">
+                    Anmelden
+                </button>
+            </div>
+
+            <p class="text-gray-500 text-xs text-center mt-6">
+                Kein Zugang? Bitte an eine:n Admin wenden.
+            </p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- APP - erst sichtbar nach erfolgreichem Login                 -->
+    <!-- ============================================================ -->
+    <div id="app" class="hidden">
     <div class="max-w-7xl mx-auto px-6 py-12">
 
         <!-- Header -->
-        <div class="mb-6 text-left">
+        <div class="mb-6 flex items-start justify-between gap-4">
             <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 pb-2">CPC - Emery Oil Verdünnungsrechner</h1>
+            <div class="flex items-center gap-3 mt-3 flex-shrink-0">
+                <span id="userEmailLabel" class="text-sm text-gray-400 hidden sm:inline"></span>
+                <button onclick="doLogout()" class="text-sm bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 rounded-lg px-4 py-2 transition">
+                    Abmelden
+                </button>
+            </div>
         </div>
 
         <!-- Referenztabelle -->
@@ -144,10 +199,286 @@
         </div>
 
         <!-- Output Section -->
-        <div id="output" class="hidden"></div>
+        <div id="output" class="hidden mb-8"></div>
+
+        <!-- ==================================================== -->
+        <!-- KONZENTRATIONS-DATENBANK                              -->
+        <!-- ==================================================== -->
+        <div class="bg-gray-800 rounded-xl shadow-2xl border border-gray-700 mb-10 overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-700 to-blue-700 px-8 py-4">
+                <h2 class="text-lg font-bold text-white">📋 Konzentrations-Datenbank <span class="font-normal text-indigo-200 text-sm ml-2">(für alle Nutzer sichtbar)</span></h2>
+            </div>
+
+            <div class="px-8 py-6">
+                <!-- Formular -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Partikelgenerator (EAG)</label>
+                        <select id="dbGenerator" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="3480">EAG 3480</option>
+                            <option value="3482">EAG 3482</option>
+                            <option value="Andere">Andere / Freitext unten</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA</label>
+                        <select id="dbDma" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="3085 Nano">3085 Nano</option>
+                            <option value="3081 Long">3081 Long</option>
+                            <option value="Andere">Andere / Freitext unten</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Partikelgröße (nm)</label>
+                        <select id="dbSize" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="10">10 nm</option>
+                            <option value="15">15 nm</option>
+                            <option value="23">23 nm</option>
+                            <option value="41">41 nm</option>
+                            <option value="55">55 nm</option>
+                            <option value="Andere">Andere / Freitext unten</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration (%)</label>
+                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0.0150"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Datum</label>
+                        <input type="date" id="dbDate"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Freitext (falls "Andere" gewählt)</label>
+                        <input type="text" id="dbCustom" placeholder="z.B. abweichender Generator/DMA/Größe"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Settings (z.B. Flussrate, Druck, Temperatur, Bemerkungen)</label>
+                        <textarea id="dbSettings" rows="2" placeholder="z.B. Sheath Flow 15 l/min, Aerosol Flow 1.5 l/min, ..."
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+                </div>
+
+                <div id="dbFormError" class="hidden text-red-400 text-sm bg-red-900/20 border border-red-800/50 rounded-lg px-3 py-2 mb-4"></div>
+
+                <button onclick="addConcentrationEntry()"
+                    class="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg transition duration-200">
+                    Eintrag speichern
+                </button>
+
+                <!-- Filter + Tabelle -->
+                <div class="border-t border-gray-700 mt-8 pt-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <label class="text-xs font-medium text-gray-400">Filter Generator</label>
+                        <select id="dbFilter" onchange="renderEntries()" class="bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">Alle</option>
+                            <option value="3480">EAG 3480</option>
+                            <option value="3482">EAG 3482</option>
+                            <option value="Andere">Andere</option>
+                        </select>
+                        <span id="dbCount" class="text-xs text-gray-500 ml-auto"></span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gray-600 text-gray-400">
+                                    <th class="py-2 pr-4 font-semibold">Datum</th>
+                                    <th class="py-2 pr-4 font-semibold">Generator</th>
+                                    <th class="py-2 pr-4 font-semibold">DMA</th>
+                                    <th class="py-2 pr-4 font-semibold">Größe</th>
+                                    <th class="py-2 pr-4 font-semibold">Konz. (%)</th>
+                                    <th class="py-2 pr-4 font-semibold">Settings</th>
+                                    <th class="py-2 pr-4 font-semibold">Von</th>
+                                    <th class="py-2 pr-4 font-semibold"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="dbTableBody"></tbody>
+                        </table>
+                        <p id="dbEmptyState" class="hidden text-gray-500 text-sm py-6 text-center">Noch keine Einträge vorhanden.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
     </div>
 
     <script>
+        /* =====================================================
+            FIREBASE SETUP
+            Ersetze die Werte unten mit deiner eigenen Firebase-
+            Projekt-Konfiguration (Firebase Console -> Projekt-
+            einstellungen -> "Web-App"). Siehe FIREBASE_SETUP.md
+            für die Schritt-für-Schritt-Anleitung.
+        ===================================================== */
+        const firebaseConfig = {
+            apiKey: "AIzaSyB81SHEPiPa9ikPnyD9qFLVTTU2ss9rBSc",
+            authDomain: "pao-generation.firebaseapp.com",
+            projectId: "pao-generation",
+            storageBucket: "pao-generation.firebasestorage.app",
+            messagingSenderId: "128602841577",
+            appId: "1:128602841577:web:31923417a5158506d06b78"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db   = firebase.firestore();
+
+        let unsubscribeEntries = null;
+        let allEntries = [];
+
+        // --- Login / Logout ---
+        function doLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pw    = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.classList.add('hidden');
+
+            if (!email || !pw) {
+                errorDiv.textContent = 'Bitte E-Mail und Passwort eingeben.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, pw).catch(err => {
+                errorDiv.textContent = 'Anmeldung fehlgeschlagen: falsche E-Mail oder falsches Passwort.';
+                errorDiv.classList.remove('hidden');
+            });
+        }
+
+        function doLogout() {
+            auth.signOut();
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginGate').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                document.getElementById('userEmailLabel').textContent = user.email;
+                document.getElementById('userEmailLabel').classList.remove('hidden');
+                startListeningToEntries();
+            } else {
+                document.getElementById('loginGate').classList.remove('hidden');
+                document.getElementById('app').classList.add('hidden');
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                if (unsubscribeEntries) { unsubscribeEntries(); unsubscribeEntries = null; }
+            }
+        });
+
+        // --- Konzentrations-Datenbank ---
+        function addConcentrationEntry() {
+            const errorDiv = document.getElementById('dbFormError');
+            errorDiv.classList.add('hidden');
+
+            const generator = document.getElementById('dbGenerator').value;
+            const dma       = document.getElementById('dbDma').value;
+            const size      = document.getElementById('dbSize').value;
+            const custom    = document.getElementById('dbCustom').value.trim();
+            const concentration = parseFloat(document.getElementById('dbConcentration').value);
+            const settings  = document.getElementById('dbSettings').value.trim();
+            let date        = document.getElementById('dbDate').value;
+
+            if (!date) date = new Date().toISOString().slice(0, 10);
+
+            if ([generator, dma, size].includes('Andere') && !custom) {
+                errorDiv.textContent = 'Bitte Freitext ausfüllen, wenn "Andere" gewählt wurde.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            if (isNaN(concentration) || concentration <= 0) {
+                errorDiv.textContent = 'Bitte eine gültige Konzentration (%) eingeben.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            const entry = {
+                generator: generator === 'Andere' ? custom : generator,
+                dma: dma === 'Andere' ? custom : dma,
+                size: size === 'Andere' ? custom : size,
+                concentration: concentration,
+                settings: settings,
+                date: date,
+                createdBy: auth.currentUser ? auth.currentUser.email : 'unbekannt',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('concentrations').add(entry)
+                .then(() => {
+                    document.getElementById('dbConcentration').value = '';
+                    document.getElementById('dbSettings').value = '';
+                    document.getElementById('dbCustom').value = '';
+                })
+                .catch(err => {
+                    errorDiv.textContent = 'Fehler beim Speichern: ' + err.message;
+                    errorDiv.classList.remove('hidden');
+                });
+        }
+
+        function startListeningToEntries() {
+            if (unsubscribeEntries) unsubscribeEntries();
+            unsubscribeEntries = db.collection('concentrations')
+                .orderBy('date', 'desc')
+                .onSnapshot(snapshot => {
+                    allEntries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderEntries();
+                }, err => {
+                    console.error('Firestore-Fehler:', err);
+                });
+        }
+
+        function renderEntries() {
+            const filter = document.getElementById('dbFilter').value;
+            const tbody = document.getElementById('dbTableBody');
+            const emptyState = document.getElementById('dbEmptyState');
+            const countLabel = document.getElementById('dbCount');
+
+            const filtered = filter === 'all'
+                ? allEntries
+                : allEntries.filter(e => e.generator === filter);
+
+            countLabel.textContent = filtered.length + ' Eintrag/Einträge';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            tbody.innerHTML = filtered.map(e => `
+                <tr class="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+                    <td class="py-2 pr-4 font-mono text-gray-300">${e.date || '–'}</td>
+                    <td class="py-2 pr-4 text-blue-300 font-semibold">${escapeHtml(e.generator)}</td>
+                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dma)}</td>
+                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(String(e.size))} nm</td>
+                    <td class="py-2 pr-4 font-mono text-cyan-400">${e.concentration}</td>
+                    <td class="py-2 pr-4 text-gray-400 max-w-xs truncate" title="${escapeHtml(e.settings || '')}">${escapeHtml(e.settings || '–')}</td>
+                    <td class="py-2 pr-4 text-gray-500 text-xs">${escapeHtml(e.createdBy || '–')}</td>
+                    <td class="py-2 pr-4">
+                        <button onclick="deleteEntry('${e.id}')" class="text-red-400 hover:text-red-300 text-xs">Löschen</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteEntry(id) {
+            if (!confirm('Diesen Eintrag wirklich löschen?')) return;
+            db.collection('concentrations').doc(id).delete();
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ===================== Original Rechner-Logik (unverändert) =====================
         const FIRST_DIL_OPTIONS = [1, 2, 3, 4, 5];
         const DEFAULT_FIRST_DIL = 1;
 
@@ -396,6 +727,7 @@
         // Init
         renderFirstDilutionOptions();
         calculateBuffer();
+        document.getElementById('dbDate').valueAsDate = new Date();
     </script>
 </body>
 </html>
