@@ -187,13 +187,13 @@
                 <!-- Formular -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Datum</label>
-                        <input type="date" id="dbDate"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Datum <span class="text-red-400">*</span></label>
+                        <input type="date" id="dbDate" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Generator</label>
-                        <select id="dbGenerator"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Generator <span class="text-red-400">*</span></label>
+                        <select id="dbGenerator" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="">– bitte wählen –</option>
                             <option value="EAG 3480 (70729140)">EAG 3480 (70729140)</option>
@@ -202,8 +202,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA</label>
-                        <select id="dbDmaType"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA <span class="text-red-400">*</span></label>
+                        <select id="dbDmaType" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="">– bitte wählen –</option>
                             <option value="Long 3081 (411320008)">Long 3081 (411320008)</option>
@@ -215,40 +215,40 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Peak [nm]</label>
-                        <input type="number" id="dbPeak" step="any" placeholder="z.B. 23,0"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Peak [nm] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbPeak" step="any" placeholder="z.B. 23,0" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration [%]</label>
-                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0,0150"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration [%] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0,0150" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Spannung [kV]</label>
-                        <input type="number" id="dbVoltage" step="any" placeholder="z.B. 1,8"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Spannung [kV] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbVoltage" step="any" placeholder="z.B. 1,8" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Kapillardruck [psi]</label>
-                        <input type="number" id="dbPressure" step="any" placeholder="z.B. 4,8"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Kapillardruck [psi] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbPressure" step="any" placeholder="z.B. 4,8" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Druckluft [lpm]</label>
-                        <input type="number" id="dbAirflow" step="any" placeholder="z.B. 1,5"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Druckluft [lpm] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbAirflow" step="any" placeholder="z.B. 1,5" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">CO2 [lpm]</label>
-                        <input type="number" id="dbCo2" step="any" placeholder="z.B. 0,1"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">CO2 [lpm] <span class="text-red-400">*</span></label>
+                        <input type="number" id="dbCo2" step="any" placeholder="z.B. 0,1" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Nutzer</label>
-                        <input type="text" id="dbUser"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Nutzer <span class="text-red-400">*</span></label>
+                        <input type="text" id="dbUser" required
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
@@ -414,15 +414,30 @@
             const user        = document.getElementById('dbUser').value.trim();
             const note        = document.getElementById('dbNote').value.trim();
 
-            if (!date) date = new Date().toISOString().slice(0, 10);
+            const missing = [];
+            if (!date) missing.push('Datum');
+            if (!generator) missing.push('Generator');
+            if (!dmaType) missing.push('DMA');
+            if (peak === '') missing.push('Peak [nm]');
+            if (concentration === '') missing.push('Konzentration [%]');
+            if (voltage === '') missing.push('Spannung [kV]');
+            if (pressure === '') missing.push('Kapillardruck [psi]');
+            if (airflow === '') missing.push('Druckluft [lpm]');
+            if (co2 === '') missing.push('CO2 [lpm]');
+            if (!user) missing.push('Nutzer');
 
-            if (!generator || !dmaType || !user) {
-                errorDiv.textContent = 'Bitte mindestens Generator, DMA und Nutzer ausfüllen.';
+            if (missing.length > 0) {
+                errorDiv.textContent = 'Bitte alle Pflichtfelder ausfüllen: ' + missing.join(', ') + '.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
-            if (concentration === '' || isNaN(parseFloat(concentration)) || parseFloat(concentration) <= 0) {
+            if (isNaN(parseFloat(concentration)) || parseFloat(concentration) <= 0) {
                 errorDiv.textContent = 'Bitte eine gültige Konzentration [%] eingeben.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            if ([peak, voltage, pressure, airflow, co2].some(v => isNaN(parseFloat(v)))) {
+                errorDiv.textContent = 'Bitte bei Peak, Spannung, Kapillardruck, Druckluft und CO2 gültige Zahlen eingeben.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
