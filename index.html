@@ -70,51 +70,22 @@
             </div>
         </div>
 
-        <!-- Referenztabelle -->
-        <div class="bg-gray-800 rounded-xl shadow-2xl px-8 py-5 border border-gray-700 mb-6 w-full overflow-x-auto">
-            <table class="w-full text-sm text-center border-collapse">
-                <thead>
-                    <tr class="border-b border-gray-600">
-                        <th class="py-2 px-4 text-left text-gray-400 font-semibold">EAG</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">DMA</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">10 nm</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">15 nm</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">23 nm</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">41 nm</th>
-                        <th class="py-2 px-4 text-gray-400 font-semibold">55 nm</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
-                        <td class="py-3 px-4 text-left font-mono text-blue-300 font-semibold">3480</td>
-                        <td class="py-3 px-4 text-gray-300">3085 Nano</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,0050%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,0150%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,0600%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,3000%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">1,0000%</td>
-                    </tr>
-                    <tr class="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
-                        <td class="py-3 px-4 text-left font-mono text-blue-300 font-semibold">3480</td>
-                        <td class="py-3 px-4 text-gray-300">3081 Long</td>
-                        <td class="py-3 px-4 font-mono text-cyan-500">0,006%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-500">0,015%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-500">0,065%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-500">0,300%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-500">0,850%</td>
-                    </tr>
-                    <tr class="hover:bg-gray-700/30 transition-colors">
-                        <td class="py-3 px-4 text-left font-mono text-blue-300 font-semibold">3482</td>
-                        <td class="py-3 px-4 text-gray-300">3081 Long</td>
-                        <td class="py-3 px-4 font-mono text-gray-500">–</td>
-                        <td class="py-3 px-4 font-mono text-gray-500">–</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,0300%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,1429%</td>
-                        <td class="py-3 px-4 font-mono text-cyan-400">0,5000%</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Tab-Navigation -->
+        <div class="flex gap-2 mb-6 border-b border-gray-700">
+            <button id="tabBtnCalculator" onclick="switchTab('calculator')"
+                class="px-5 py-3 text-sm font-semibold rounded-t-lg transition duration-200 border-b-2">
+                🧪 Buffer-Rechner
+            </button>
+            <button id="tabBtnDatabase" onclick="switchTab('database')"
+                class="px-5 py-3 text-sm font-semibold rounded-t-lg transition duration-200 border-b-2">
+                📋 Datenbank
+            </button>
         </div>
+
+        <!-- ==================================================== -->
+        <!-- TAB 1: BUFFER-RECHNER                                 -->
+        <!-- ==================================================== -->
+        <div id="tabPanelCalculator">
 
         <!-- Buffer-Rechner -->
         <div class="bg-gray-800 rounded-xl shadow-2xl border border-gray-700 mb-6 overflow-hidden">
@@ -201,9 +172,12 @@
         <!-- Output Section -->
         <div id="output" class="hidden mb-8"></div>
 
+        </div><!-- /tabPanelCalculator -->
+
         <!-- ==================================================== -->
-        <!-- KONZENTRATIONS-DATENBANK                              -->
+        <!-- TAB 2: KONZENTRATIONS-DATENBANK                       -->
         <!-- ==================================================== -->
+        <div id="tabPanelDatabase" class="hidden">
         <div class="bg-gray-800 rounded-xl shadow-2xl border border-gray-700 mb-10 overflow-hidden">
             <div class="bg-gradient-to-r from-indigo-700 to-blue-700 px-8 py-4">
                 <h2 class="text-lg font-bold text-white">📋 Konzentrations-Datenbank <span class="font-normal text-indigo-200 text-sm ml-2">(für alle Nutzer sichtbar)</span></h2>
@@ -213,52 +187,64 @@
                 <!-- Formular -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Partikelgenerator (EAG)</label>
-                        <select id="dbGenerator" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="3480">EAG 3480</option>
-                            <option value="3482">EAG 3482</option>
-                            <option value="Andere">Andere / Freitext unten</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA</label>
-                        <select id="dbDma" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="3085 Nano">3085 Nano</option>
-                            <option value="3081 Long">3081 Long</option>
-                            <option value="Andere">Andere / Freitext unten</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Partikelgröße (nm)</label>
-                        <select id="dbSize" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="10">10 nm</option>
-                            <option value="15">15 nm</option>
-                            <option value="23">23 nm</option>
-                            <option value="41">41 nm</option>
-                            <option value="55">55 nm</option>
-                            <option value="Andere">Andere / Freitext unten</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration (%)</label>
-                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0.0150"
-                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
                         <label class="block text-xs font-medium text-gray-400 mb-1">Datum</label>
                         <input type="date" id="dbDate"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Freitext (falls "Andere" gewählt)</label>
-                        <input type="text" id="dbCustom" placeholder="z.B. abweichender Generator/DMA/Größe"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Generator</label>
+                        <input type="text" id="dbGenerator" list="dbGeneratorList" placeholder="z.B. EAG 3480"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <datalist id="dbGeneratorList">
+                            <option value="EAG 3480">
+                            <option value="EAG 3482">
+                        </datalist>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA / Classifier Type</label>
+                        <input type="text" id="dbDmaType" list="dbDmaTypeList" placeholder="z.B. 3085 Nano"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <datalist id="dbDmaTypeList">
+                            <option value="3085 Nano">
+                            <option value="3081 Long">
+                        </datalist>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA / Classifier SN</label>
+                        <input type="text" id="dbDmaSn" placeholder="Seriennummer"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Peak (nm)</label>
+                        <input type="number" id="dbPeak" step="any" placeholder="z.B. 23"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration [%]</label>
+                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0.0150"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Spannung [kV]</label>
+                        <input type="number" id="dbVoltage" step="any" placeholder="z.B. 8.5"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Kapillardruck [psi]</label>
+                        <input type="number" id="dbPressure" step="any" placeholder="z.B. 12.3"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Nutzer</label>
+                        <input type="text" id="dbUser"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
                     <div class="md:col-span-3">
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Settings (z.B. Flussrate, Druck, Temperatur, Bemerkungen)</label>
-                        <textarea id="dbSettings" rows="2" placeholder="z.B. Sheath Flow 15 l/min, Aerosol Flow 1.5 l/min, ..."
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Notiz (optional)</label>
+                        <textarea id="dbNote" rows="2" placeholder="Bemerkungen..."
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                     </div>
                 </div>
@@ -276,9 +262,6 @@
                         <label class="text-xs font-medium text-gray-400">Filter Generator</label>
                         <select id="dbFilter" onchange="renderEntries()" class="bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="all">Alle</option>
-                            <option value="3480">EAG 3480</option>
-                            <option value="3482">EAG 3482</option>
-                            <option value="Andere">Andere</option>
                         </select>
                         <span id="dbCount" class="text-xs text-gray-500 ml-auto"></span>
                     </div>
@@ -289,11 +272,14 @@
                                 <tr class="border-b border-gray-600 text-gray-400">
                                     <th class="py-2 pr-4 font-semibold">Datum</th>
                                     <th class="py-2 pr-4 font-semibold">Generator</th>
-                                    <th class="py-2 pr-4 font-semibold">DMA</th>
-                                    <th class="py-2 pr-4 font-semibold">Größe</th>
-                                    <th class="py-2 pr-4 font-semibold">Konz. (%)</th>
-                                    <th class="py-2 pr-4 font-semibold">Settings</th>
-                                    <th class="py-2 pr-4 font-semibold">Von</th>
+                                    <th class="py-2 pr-4 font-semibold">DMA Type</th>
+                                    <th class="py-2 pr-4 font-semibold">DMA SN</th>
+                                    <th class="py-2 pr-4 font-semibold">Peak</th>
+                                    <th class="py-2 pr-4 font-semibold">Konz. [%]</th>
+                                    <th class="py-2 pr-4 font-semibold">Spannung [kV]</th>
+                                    <th class="py-2 pr-4 font-semibold">Kapillardruck [psi]</th>
+                                    <th class="py-2 pr-4 font-semibold">Nutzer</th>
+                                    <th class="py-2 pr-4 font-semibold">Notiz</th>
                                     <th class="py-2 pr-4 font-semibold"></th>
                                 </tr>
                             </thead>
@@ -304,25 +290,26 @@
                 </div>
             </div>
         </div>
+        </div><!-- /tabPanelDatabase -->
 
     </div>
     </div>
 
     <script>
         /* =====================================================
-            FIREBASE SETUP
-            Ersetze die Werte unten mit deiner eigenen Firebase-
-            Projekt-Konfiguration (Firebase Console -> Projekt-
-            einstellungen -> "Web-App"). Siehe FIREBASE_SETUP.md
-            für die Schritt-für-Schritt-Anleitung.
+           FIREBASE SETUP
+           Ersetze die Werte unten mit deiner eigenen Firebase-
+           Projekt-Konfiguration (Firebase Console -> Projekt-
+           einstellungen -> "Web-App"). Siehe FIREBASE_SETUP.md
+           für die Schritt-für-Schritt-Anleitung.
         ===================================================== */
         const firebaseConfig = {
-            apiKey: "AIzaSyB81SHEPiPa9ikPnyD9qFLVTTU2ss9rBSc",
-            authDomain: "pao-generation.firebaseapp.com",
-            projectId: "pao-generation",
-            storageBucket: "pao-generation.firebasestorage.app",
-            messagingSenderId: "128602841577",
-            appId: "1:128602841577:web:31923417a5158506d06b78"
+            apiKey: "DEIN_API_KEY",
+            authDomain: "DEIN_PROJEKT.firebaseapp.com",
+            projectId: "DEIN_PROJEKT",
+            storageBucket: "DEIN_PROJEKT.appspot.com",
+            messagingSenderId: "DEINE_SENDER_ID",
+            appId: "DEINE_APP_ID"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -361,6 +348,7 @@
                 document.getElementById('app').classList.remove('hidden');
                 document.getElementById('userEmailLabel').textContent = user.email;
                 document.getElementById('userEmailLabel').classList.remove('hidden');
+                document.getElementById('dbUser').value = user.email;
                 startListeningToEntries();
             } else {
                 document.getElementById('loginGate').classList.remove('hidden');
@@ -371,48 +359,85 @@
             }
         });
 
+        // --- Tabs ---
+        function switchTab(tab) {
+            const calcPanel = document.getElementById('tabPanelCalculator');
+            const dbPanel   = document.getElementById('tabPanelDatabase');
+            const calcBtn   = document.getElementById('tabBtnCalculator');
+            const dbBtn     = document.getElementById('tabBtnDatabase');
+
+            const activeClasses   = ['text-white', 'border-blue-500'];
+            const inactiveClasses = ['text-gray-400', 'border-transparent', 'hover:text-gray-200'];
+
+            if (tab === 'calculator') {
+                calcPanel.classList.remove('hidden');
+                dbPanel.classList.add('hidden');
+                calcBtn.classList.add(...activeClasses);
+                calcBtn.classList.remove(...inactiveClasses);
+                dbBtn.classList.add(...inactiveClasses);
+                dbBtn.classList.remove(...activeClasses);
+            } else {
+                dbPanel.classList.remove('hidden');
+                calcPanel.classList.add('hidden');
+                dbBtn.classList.add(...activeClasses);
+                dbBtn.classList.remove(...inactiveClasses);
+                calcBtn.classList.add(...inactiveClasses);
+                calcBtn.classList.remove(...activeClasses);
+            }
+        }
+
         // --- Konzentrations-Datenbank ---
         function addConcentrationEntry() {
             const errorDiv = document.getElementById('dbFormError');
             errorDiv.classList.add('hidden');
 
-            const generator = document.getElementById('dbGenerator').value;
-            const dma       = document.getElementById('dbDma').value;
-            const size      = document.getElementById('dbSize').value;
-            const custom    = document.getElementById('dbCustom').value.trim();
-            const concentration = parseFloat(document.getElementById('dbConcentration').value);
-            const settings  = document.getElementById('dbSettings').value.trim();
-            let date        = document.getElementById('dbDate').value;
+            let date          = document.getElementById('dbDate').value;
+            const generator   = document.getElementById('dbGenerator').value.trim();
+            const dmaType     = document.getElementById('dbDmaType').value.trim();
+            const dmaSn       = document.getElementById('dbDmaSn').value.trim();
+            const peak        = document.getElementById('dbPeak').value;
+            const concentration = document.getElementById('dbConcentration').value;
+            const voltage     = document.getElementById('dbVoltage').value;
+            const pressure    = document.getElementById('dbPressure').value;
+            const user        = document.getElementById('dbUser').value.trim();
+            const note        = document.getElementById('dbNote').value.trim();
 
             if (!date) date = new Date().toISOString().slice(0, 10);
 
-            if ([generator, dma, size].includes('Andere') && !custom) {
-                errorDiv.textContent = 'Bitte Freitext ausfüllen, wenn "Andere" gewählt wurde.';
+            if (!generator || !dmaType || !user) {
+                errorDiv.textContent = 'Bitte mindestens Generator, DMA/Classifier Type und Nutzer ausfüllen.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
-            if (isNaN(concentration) || concentration <= 0) {
-                errorDiv.textContent = 'Bitte eine gültige Konzentration (%) eingeben.';
+            if (concentration === '' || isNaN(parseFloat(concentration)) || parseFloat(concentration) <= 0) {
+                errorDiv.textContent = 'Bitte eine gültige Konzentration [%] eingeben.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
 
             const entry = {
-                generator: generator === 'Andere' ? custom : generator,
-                dma: dma === 'Andere' ? custom : dma,
-                size: size === 'Andere' ? custom : size,
-                concentration: concentration,
-                settings: settings,
                 date: date,
+                generator: generator,
+                dmaType: dmaType,
+                dmaSn: dmaSn,
+                peak: peak === '' ? null : parseFloat(peak),
+                concentration: parseFloat(concentration),
+                voltage: voltage === '' ? null : parseFloat(voltage),
+                pressure: pressure === '' ? null : parseFloat(pressure),
+                user: user,
+                note: note,
                 createdBy: auth.currentUser ? auth.currentUser.email : 'unbekannt',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
             db.collection('concentrations').add(entry)
                 .then(() => {
+                    document.getElementById('dbDmaSn').value = '';
+                    document.getElementById('dbPeak').value = '';
                     document.getElementById('dbConcentration').value = '';
-                    document.getElementById('dbSettings').value = '';
-                    document.getElementById('dbCustom').value = '';
+                    document.getElementById('dbVoltage').value = '';
+                    document.getElementById('dbPressure').value = '';
+                    document.getElementById('dbNote').value = '';
                 })
                 .catch(err => {
                     errorDiv.textContent = 'Fehler beim Speichern: ' + err.message;
@@ -426,10 +451,22 @@
                 .orderBy('date', 'desc')
                 .onSnapshot(snapshot => {
                     allEntries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateFilterOptions();
                     renderEntries();
                 }, err => {
                     console.error('Firestore-Fehler:', err);
                 });
+        }
+
+        function updateFilterOptions() {
+            const filterSelect = document.getElementById('dbFilter');
+            const current = filterSelect.value;
+            const generators = [...new Set(allEntries.map(e => e.generator).filter(Boolean))].sort();
+
+            filterSelect.innerHTML = '<option value="all">Alle</option>' +
+                generators.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');
+
+            if (generators.includes(current)) filterSelect.value = current;
         }
 
         function renderEntries() {
@@ -451,15 +488,20 @@
             }
             emptyState.classList.add('hidden');
 
+            const fmt = v => (v === null || v === undefined || v === '') ? '–' : v;
+
             tbody.innerHTML = filtered.map(e => `
                 <tr class="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
                     <td class="py-2 pr-4 font-mono text-gray-300">${e.date || '–'}</td>
-                    <td class="py-2 pr-4 text-blue-300 font-semibold">${escapeHtml(e.generator)}</td>
-                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dma)}</td>
-                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(String(e.size))} nm</td>
-                    <td class="py-2 pr-4 font-mono text-cyan-400">${e.concentration}</td>
-                    <td class="py-2 pr-4 text-gray-400 max-w-xs truncate" title="${escapeHtml(e.settings || '')}">${escapeHtml(e.settings || '–')}</td>
-                    <td class="py-2 pr-4 text-gray-500 text-xs">${escapeHtml(e.createdBy || '–')}</td>
+                    <td class="py-2 pr-4 text-blue-300 font-semibold">${escapeHtml(e.generator || '')}</td>
+                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dmaType || '')}</td>
+                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dmaSn || '')}</td>
+                    <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.peak)}</td>
+                    <td class="py-2 pr-4 font-mono text-cyan-400">${fmt(e.concentration)}</td>
+                    <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.voltage)}</td>
+                    <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.pressure)}</td>
+                    <td class="py-2 pr-4 text-gray-500 text-xs">${escapeHtml(e.user || '')}</td>
+                    <td class="py-2 pr-4 text-gray-400 max-w-xs truncate" title="${escapeHtml(e.note || '')}">${escapeHtml(e.note || '–')}</td>
                     <td class="py-2 pr-4">
                         <button onclick="deleteEntry('${e.id}')" class="text-red-400 hover:text-red-300 text-xs">Löschen</button>
                     </td>
@@ -728,6 +770,7 @@
         renderFirstDilutionOptions();
         calculateBuffer();
         document.getElementById('dbDate').valueAsDate = new Date();
+        switchTab('calculator');
     </script>
 </body>
 </html>
