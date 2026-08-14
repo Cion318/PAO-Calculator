@@ -193,47 +193,57 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-1">Generator</label>
-                        <input type="text" id="dbGenerator" list="dbGeneratorList" placeholder="z.B. EAG 3480"
+                        <select id="dbGenerator"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <datalist id="dbGeneratorList">
-                            <option value="EAG 3480">
-                            <option value="EAG 3482">
-                        </datalist>
+                            <option value="">– bitte wählen –</option>
+                            <option value="EAG 3480 (70729140)">EAG 3480 (70729140)</option>
+                            <option value="EAG 3480 (3480193001)">EAG 3480 (3480193001)</option>
+                            <option value="EAG 3482 (3482203303)">EAG 3482 (3482203303)</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA / Classifier Type</label>
-                        <input type="text" id="dbDmaType" list="dbDmaTypeList" placeholder="z.B. 3085 Nano"
+                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA</label>
+                        <select id="dbDmaType"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <datalist id="dbDmaTypeList">
-                            <option value="3085 Nano">
-                            <option value="3081 Long">
-                        </datalist>
+                            <option value="">– bitte wählen –</option>
+                            <option value="Long 3081 (411320008)">Long 3081 (411320008)</option>
+                            <option value="Long 3081 (411320020)">Long 3081 (411320020)</option>
+                            <option value="Long 3081 (411320021)">Long 3081 (411320021)</option>
+                            <option value="Long 3081 (411320022)">Long 3081 (411320022)</option>
+                            <option value="Long 3081 (411320023)">Long 3081 (411320023)</option>
+                            <option value="Short 3085A (411320005)">Short 3085A (411320005)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Peak [nm]</label>
+                        <input type="number" id="dbPeak" step="any" placeholder="z.B. 23,0"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">DMA / Classifier SN</label>
-                        <input type="text" id="dbDmaSn" placeholder="Seriennummer"
-                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1">Peak (nm)</label>
-                        <input type="number" id="dbPeak" step="any" placeholder="z.B. 23"
-                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-1">Konzentration [%]</label>
-                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0.0150"
+                        <input type="number" id="dbConcentration" step="0.0001" placeholder="z.B. 0,0150"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-1">Spannung [kV]</label>
-                        <input type="number" id="dbVoltage" step="any" placeholder="z.B. 8.5"
+                        <input type="number" id="dbVoltage" step="any" placeholder="z.B. 1,8"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-400 mb-1">Kapillardruck [psi]</label>
-                        <input type="number" id="dbPressure" step="any" placeholder="z.B. 12.3"
+                        <input type="number" id="dbPressure" step="any" placeholder="z.B. 4,8"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Druckluft [lpm]</label>
+                        <input type="number" id="dbAirflow" step="any" placeholder="z.B. 1,5"
+                            class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">CO2 [lpm]</label>
+                        <input type="number" id="dbCo2" step="any" placeholder="z.B. 0,1"
                             class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
@@ -272,12 +282,13 @@
                                 <tr class="border-b border-gray-600 text-gray-400">
                                     <th class="py-2 pr-4 font-semibold">Datum</th>
                                     <th class="py-2 pr-4 font-semibold">Generator</th>
-                                    <th class="py-2 pr-4 font-semibold">DMA Type</th>
-                                    <th class="py-2 pr-4 font-semibold">DMA SN</th>
-                                    <th class="py-2 pr-4 font-semibold">Peak</th>
+                                    <th class="py-2 pr-4 font-semibold">DMA</th>
+                                    <th class="py-2 pr-4 font-semibold">Peak [nm]</th>
                                     <th class="py-2 pr-4 font-semibold">Konz. [%]</th>
                                     <th class="py-2 pr-4 font-semibold">Spannung [kV]</th>
                                     <th class="py-2 pr-4 font-semibold">Kapillardruck [psi]</th>
+                                    <th class="py-2 pr-4 font-semibold">Druckluft [lpm]</th>
+                                    <th class="py-2 pr-4 font-semibold">CO2 [lpm]</th>
                                     <th class="py-2 pr-4 font-semibold">Nutzer</th>
                                     <th class="py-2 pr-4 font-semibold">Notiz</th>
                                     <th class="py-2 pr-4 font-semibold"></th>
@@ -392,20 +403,21 @@
             errorDiv.classList.add('hidden');
 
             let date          = document.getElementById('dbDate').value;
-            const generator   = document.getElementById('dbGenerator').value.trim();
-            const dmaType     = document.getElementById('dbDmaType').value.trim();
-            const dmaSn       = document.getElementById('dbDmaSn').value.trim();
+            const generator   = document.getElementById('dbGenerator').value;
+            const dmaType     = document.getElementById('dbDmaType').value;
             const peak        = document.getElementById('dbPeak').value;
             const concentration = document.getElementById('dbConcentration').value;
             const voltage     = document.getElementById('dbVoltage').value;
             const pressure    = document.getElementById('dbPressure').value;
+            const airflow     = document.getElementById('dbAirflow').value;
+            const co2         = document.getElementById('dbCo2').value;
             const user        = document.getElementById('dbUser').value.trim();
             const note        = document.getElementById('dbNote').value.trim();
 
             if (!date) date = new Date().toISOString().slice(0, 10);
 
             if (!generator || !dmaType || !user) {
-                errorDiv.textContent = 'Bitte mindestens Generator, DMA/Classifier Type und Nutzer ausfüllen.';
+                errorDiv.textContent = 'Bitte mindestens Generator, DMA und Nutzer ausfüllen.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
@@ -419,11 +431,12 @@
                 date: date,
                 generator: generator,
                 dmaType: dmaType,
-                dmaSn: dmaSn,
                 peak: peak === '' ? null : parseFloat(peak),
                 concentration: parseFloat(concentration),
                 voltage: voltage === '' ? null : parseFloat(voltage),
                 pressure: pressure === '' ? null : parseFloat(pressure),
+                airflow: airflow === '' ? null : parseFloat(airflow),
+                co2: co2 === '' ? null : parseFloat(co2),
                 user: user,
                 note: note,
                 createdBy: auth.currentUser ? auth.currentUser.email : 'unbekannt',
@@ -432,11 +445,12 @@
 
             db.collection('concentrations').add(entry)
                 .then(() => {
-                    document.getElementById('dbDmaSn').value = '';
                     document.getElementById('dbPeak').value = '';
                     document.getElementById('dbConcentration').value = '';
                     document.getElementById('dbVoltage').value = '';
                     document.getElementById('dbPressure').value = '';
+                    document.getElementById('dbAirflow').value = '';
+                    document.getElementById('dbCo2').value = '';
                     document.getElementById('dbNote').value = '';
                 })
                 .catch(err => {
@@ -495,11 +509,12 @@
                     <td class="py-2 pr-4 font-mono text-gray-300">${e.date || '–'}</td>
                     <td class="py-2 pr-4 text-blue-300 font-semibold">${escapeHtml(e.generator || '')}</td>
                     <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dmaType || '')}</td>
-                    <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dmaSn || '')}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.peak)}</td>
                     <td class="py-2 pr-4 font-mono text-cyan-400">${fmt(e.concentration)}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.voltage)}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.pressure)}</td>
+                    <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.airflow)}</td>
+                    <td class="py-2 pr-4 font-mono text-gray-300">${fmt(e.co2)}</td>
                     <td class="py-2 pr-4 text-gray-500 text-xs">${escapeHtml(e.user || '')}</td>
                     <td class="py-2 pr-4 text-gray-400 max-w-xs truncate" title="${escapeHtml(e.note || '')}">${escapeHtml(e.note || '–')}</td>
                     <td class="py-2 pr-4">
