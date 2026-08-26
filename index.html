@@ -525,7 +525,7 @@
                     <td class="py-2 pr-4 text-blue-300 font-semibold">${escapeHtml(e.generator || '')}</td>
                     <td class="py-2 pr-4 text-gray-300">${escapeHtml(e.dmaType || '')}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${formatNum(e.peak)}</td>
-                    <td class="py-2 pr-4 font-mono text-cyan-400">${formatNum(e.concentration)}</td>
+                    <td class="py-2 pr-4 font-mono text-cyan-400">${formatConcentration(e.concentration)}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${formatNum(e.voltage)}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${formatNum(e.pressure)}</td>
                     <td class="py-2 pr-4 font-mono text-gray-300">${formatNum(e.airflow)}</td>
@@ -561,6 +561,11 @@
         function formatNum(value) {
             if (value === null || value === undefined || value === '' || isNaN(value)) return '–';
             return Number(value).toFixed(1).replace('.', ',');
+        }
+
+        function formatConcentration(value) {
+            if (value === null || value === undefined || value === '' || isNaN(value)) return '–';
+            return Number(value).toFixed(4).replace('.', ',');
         }
 
         // ===================== Original Rechner-Logik (unverändert) =====================
